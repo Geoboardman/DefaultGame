@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Android.Locations;
 
 namespace DefaultGame.Common
 {
@@ -14,6 +15,21 @@ namespace DefaultGame.Common
         {
             get;
             private set;
+        }
+
+        public static EventHandler<LocationChangedEventArgs> OnLocationChanged;
+
+        public static void TriggerLocationChange(Location loc)
+        {
+            if (OnLocationChanged != null)
+                OnLocationChanged(typeof(GameController), new LocationChangedEventArgs(loc));
+        }
+
+        public class LocationChangedEventArgs : EventArgs
+        {
+            public LocationChangedEventArgs(Location iloc)
+            { location = iloc; }
+            public Location location { get; set; }
         }
 
         public static void Initialize(CCGameView gameView)
