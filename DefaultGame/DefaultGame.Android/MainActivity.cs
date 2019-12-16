@@ -11,8 +11,6 @@ using Android.OS;
 
 using CocosSharp;
 using DefaultGame.Common;
-using Android.Locations;
-using Android.Content;
 
 namespace DefaultGame.Android
 {
@@ -25,40 +23,13 @@ namespace DefaultGame.Android
 		ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden)]
 	public class MainActivity : Activity
 	{
-        Location location = null;
-        LocationListener locationListener = null;
-
-        class LocationListener : Java.Lang.Object, ILocationListener
-        {
-            public LocationListener()
-            {
-            }
-
-            public void OnLocationChanged(Location newLoc)
-            {
-                GameController.TriggerLocationChange(newLoc);
-            }
-
-            public void OnProviderDisabled(string provider)
-            {
-            }
-
-            public void OnProviderEnabled(string provider)
-            {
-            }
-
-            public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
-            {
-            }
-        }
-
-        protected override void OnCreate (Bundle bundle)
+		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
-            InitLocation();
+
 			// Get our game view from the layout resource,
 			// and attach the view created event to it
 			CCGameView gameView = (CCGameView)FindViewById (Resource.Id.GameView);
@@ -75,19 +46,7 @@ namespace DefaultGame.Android
             }
 
         }
-
-        private void InitLocation()
-        {
-            LocationManager locationManager = (LocationManager)GetSystemService(LocationService);
-
-            Criteria criteria = new Criteria();
-            string mprovider = locationManager.GetBestProvider(criteria, false);
-            location = locationManager.GetLastKnownLocation(mprovider);
-
-            locationListener = new LocationListener();
-            locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 5000, 10, locationListener);
-        }
-    }
+	}
 }
 
 
